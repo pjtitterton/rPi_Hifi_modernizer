@@ -1,6 +1,6 @@
 # Raspberry Pi Hi-Fi Modernizer (Acurus RL11)
 
-A project to breathe new life into vintage audio gear. Specifically, this utilizes a Raspberry Pi 3 B equipped with an infrared (IR) transmitter to mimic the IR commands of the classic **Acurus RL11 Preamplifier** (whose remote controls are now rare or deceased) and integrate automation features like a 12V power trigger.
+A project to breathe new life into vintage audio gear. Specifically, this utilizes a Raspberry Pi 3 B hardwired directly to the IR receiver signal path of the classic **Acurus RL11 Preamplifier** (whose remote controls are now rare or deceased) to control it and integrate automation features like a 12V power trigger.
 
 ---
 
@@ -33,7 +33,15 @@ sudo python3 scanner.py
 Here is the recommended development roadmap to complete the modernizer project:
 
 ### Phase 1: Physical Scan & Parameters Match
-- [ ] **Hardware Setup**: Wire up the IR transmitter LED to a Raspberry Pi GPIO pin (via a driving transistor to maximize IR range) and configure the device overlay in `/boot/config.txt` (e.g., `dtoverlay=gpio-ir-tx,gpio_pin=17`).
+- [ ] **Hardware Setup (Hardwired Connection)**: Connect a Raspberry Pi GPIO pin directly to the Acurus RL11's external IR receiver jack (usually a 3.5mm input) or the output pin of the internal IR receiver sensor.
+  - > [!WARNING]
+  > **Voltage & Logic Level Protection**
+  > The Raspberry Pi GPIO pins operate on 3.3V logic and are not 5V-tolerant. Vintage Acurus RL11 control circuits typically operate on 5V logic. **Do not connect them directly.** Use an optocoupler, level-shifter, or an open-collector NPN transistor circuit to safely interface and isolate the Pi's GPIO from the preamplifier's 5V lines.
+  - Configure the GPIO transmitter overlay in `/boot/config.txt` (e.g., `dtoverlay=gpio-ir-tx,gpio_pin=17`).
+- [ ] **Signal Carrier Considerations**:
+  - The default scanner uses `ir-ctl --send-system` which modulates the signal with the standard carrier (36kHz/38kHz).
+  - Depending on where you wire into the Acurus (before or after the internal demodulator / TSOP receiver sensor), the preamp may expect **modulated** or **demodulated (baseband)** pulses.
+  - If baseband is needed, you can pass a custom `--template` argument to `scanner.py` or use a modified driver setting to suppress carrier modulation.
 - [ ] **Run the Scan**: Run the `scanner.py` script on the Pi, pointing it at the Acurus RL11.
 - [ ] **Lock In Config**: Find the volume/power trigger commands, open the backtracking menu, and choose **FOUND** to save them to `acurus_found.json`.
 - [ ] **Discover Aux Commands**: Once the correct Address and Protocol are found, use the custom transmission mode (`T <cmd>`) to map out secondary commands (such as Input Selectors: CD, Tuner, Aux, Tape).

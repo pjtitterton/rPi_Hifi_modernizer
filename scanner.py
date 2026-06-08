@@ -253,6 +253,12 @@ def main():
     print("="*60)
     print("           Acurus RL11 IR Scanner & Brute-Forcer")
     print("="*60)
+    print("  [Notice] If hardwiring Raspberry Pi GPIO to the Acurus IR receiver:")
+    print("           1. Use a level-shifter/transistor/optocoupler circuit.")
+    print("              Pi GPIO is 3.3V; Acurus circuitry is likely 5V.")
+    print("           2. Direct baseband input (after TSOP demodulator) requires")
+    print("              demodulated pulses. Use custom --template if needed.")
+    print("="*60)
     
     # Step 1: Context Gathering
     try:
