@@ -1,0 +1,9 @@
+- [x] Create project directory `acurus_ir_scanner`
+- [x] Create the interactive Python script `scanner.py`
+  - [x] Implement command line arguments (`--delay`, `--dry-run`, `--device`, `--template`)
+  - [x] Implement chip input routing (Philips, NEC, NXP, etc.)
+  - [x] Generate scanning queues for RC5, NEC, and RC6 based on priorities
+  - [x] Build the loop engine with subprocess invocation and error handling
+  - [x] Implement the interactive pause and the backtracking confirmation menu
+- [x] Test the script locally with a dry run and mocked subprocess execution
+- [x] Write a verification walkthrough in `walkthrough.md`
