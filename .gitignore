@@ -1,0 +1,11 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local scanner output
+acurus_found.json
+
+# OS files
+.DS_Store
+Thumbs.db
